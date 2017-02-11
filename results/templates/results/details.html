@@ -1,0 +1,61 @@
+{% extends 'results/results_base.html' %}
+{% load staticfiles %}
+{% block content %}
+
+<script>var dontShuffle = true;</script>
+<!--jquery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+<!--jquery UI-->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.css" type="text/css"
+      rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+<!--test styles-->
+<link type="text/css" rel="stylesheet" href="{% static 'testScripts/test.css' %}">
+<script src="{% static 'testScripts/test.js' %}"></script>
+
+
+<style>
+    body {
+        margin: 0;
+    }
+
+    #spacer {
+        height: 35px;
+    }
+
+    #results {
+        margin: 10px;
+        padding: 10px;
+        font-family: sans-serif;
+    }
+
+    .questionBlock {
+        border: 1px solid black;
+        margin: 20px;
+        padding: 10px;
+    }
+
+    .incorrect {
+        background-color: #ff908c;
+    }
+
+</style>
+
+<div id="results">
+    <h1>{{ results.name }} got {{grade.percent}}%.</h1>
+
+    <h2>
+        They scored {{grade.scoredPoints}} out of {{grade.totalPoints}} points.
+    </h2>
+
+    <!--we just plop the test html in, and use javascript to fill the answers in-->
+    <div id="test">{{ test.html|safe }}</div>
+    <div id="hidden">
+        <div id="studentResults">{{ results.response }}</div>
+        <div id="studentGrade">{{ grade }}</div>
+        <div id="answers">{{ test.answers }}</div>
+    </div>
+</div>
+
+<script src="{% static 'testScripts/review.js' %}"></script>
+{% endblock %}

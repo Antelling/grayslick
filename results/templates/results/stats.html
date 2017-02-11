@@ -1,0 +1,179 @@
+{% extends 'results/results_base.html' %}
+{% load staticfiles %}
+{% block content %}
+
+<div style="display: none">
+    <div id="data">{{data}}</div>
+    <div id="answers">{{answers}}</div>
+</div>
+
+<div id="test">{{test|safe}}</div>
+
+<script src="{% static 'designScripts/graphs.js' %}"></script>
+<script>
+    $(function () {
+
+
+        var data = parse($("#data").html());
+        var array = data.map(function (item) {
+            item = item.fields;
+            item.response = parse(item.response);
+            return item
+        });
+
+        //okay so now we have all the data for each student
+        //we want to arrange this into data for each question
+
+        var questions = {};
+        array.forEach(function (studentResponse) {
+            for (question in studentResponse.response) {
+                if (studentResponse.response.hasOwnProperty(question)) {
+                    questions[question] = questions[question] || [];
+                    questions[question].push(studentResponse.response[question])
+                }
+            }
+        });
+
+        var answers = parse($("#answers").html());
+
+        //now we want to turn this raw question data into something we can use for each question
+        var questionSummaries = {};
+        for (question in questions) {
+            if (questions.hasOwnProperty(question)) {
+                var responses = questions[question];
+                var summary = {
+                    "categorical": true,
+                    "categories": {},
+                    "scores": []
+                };
+                for (response in responses) {
+                    try {
+                        if (responses.hasOwnProperty(response)) {
+                            response = responses[response];
+                            switch (answers[question].type) {
+                                case "tf":
+                                case "mc":
+                                    var cat = JSON.stringify(response.studentAnswer);
+                                    summary.categories[cat] = summary.categories[cat] || 0;
+                                    summary.categories[cat]++;
+                                    break;
+                                case "es":
+                                case "sr":
+                                    summary.categorical = false;
+                                    if (response.hasBeenGraded && response.possiblePoints !== 0) {
+                                        summary.scores.push(response.correctPoints / response.possiblePoints);
+                                    }
+                                    break;
+                                case "fb":
+                                    //okay so fill in the blank is tricky because sometimes we have a correct answer,
+                                    //and some times we don't
+                                    //and there are infinite possible answers
+                                    //so like how do we quantify that? i have no idea
+                                    break;
+                                case "ma":
+                                    //same with matching, how do I quantify this?
+                                    //lets just treat it like an es or sa I guess
+                                    summary.categorical = false;
+                                    if (response.hasBeenGraded && response.possiblePoints !== 0) {
+                                        summary.scores.push(response.correctPoints / response.possiblePoints);
+                                    }
+                                    break;
+                                    break;
+                            }
+                        }
+                    } catch (e) {
+                        //so you know how they can edit tests and change the schema even after people have taken it?
+                        //yeah sometimes that bites you
+                        //lets just ignore it.
+                    }
+                }
+                questionSummaries[question] = summary;
+            }
+        }
+
+        //okay, now we have enough info to construct either a bar or pie graph for each question, but we need to keep
+        //the question descriptions
+
+        //so lets just do what we have been, and load the test, then put the graphs under the questions.
+
+        for (i in questionSummaries) {
+            if (questionSummaries.hasOwnProperty(i)) {
+                var summ = questionSummaries[i];
+                $("#" + i).append('<svg width="600" id="ID" height="500"></svg>'.replace("ID", "q" + i));
+                i = "q" + i;
+                try {
+                    if (summ.categorical) {
+                        createPieGraph(i, summ.categories);
+                    } else {
+                        createBarChart(i, summ.scores);
+                    }
+                } catch (e) { //something in our chart went wrong
+                    console.log(e);
+                    $("#" + i).hide();
+                }
+
+                //okay, now that we have our pretty charts, we want to append the average for the question
+                i = i.replace("q", "");
+                $("#" + i).append("<h5> Average grade: " + calcAverage(summ, answers[i].answer) + "%</h5>")
+            }
+        }
+    });
+
+    function calcAverage(question, answer) {
+        var av = 0;
+        if (question.categorical) {
+            var scores = [];
+            for (var cat in question.categories) {
+                if (question.categories.hasOwnProperty(cat)) {
+                    console.log(cat, question.categories[cat]);
+                    for (var i = 0; i < question.categories[cat]; i++) {
+                        scores.push(cat + "" == answer + "" ? 1 : 0);
+                    }
+                }
+            }
+            av = average(scores);
+        } else {
+            av = average(question.scores);
+        }
+
+        return round(av * 100, 2);
+
+        function average(array) {
+            var sum = 0;
+            for (var i = 0; i < array.length; i++) {
+                sum += array[i];
+            }
+            return sum / array.length;
+        }
+
+        function round(num, places) {
+            var multiplier = Math.pow(10, places);
+            return Math.round(num * multiplier) / multiplier;
+        }
+    }
+</script>
+
+<style>
+    svg {
+        display: block;
+    }
+
+    .question {
+        border: 1px solid black;
+        display: inline-block;
+        padding: 5px;
+        margin: 5px;
+        margin-bottom: 40px;
+    }
+
+    .bar rect {
+        fill: rgb(0, 4, 24);
+    }
+
+    .bar text {
+        fill: #fff;
+        font: 10px sans-serif;
+    }
+</style>
+
+{% endblock %}

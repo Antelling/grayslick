@@ -1,0 +1,10 @@
+table{
+    left: 20px;
+    margin-left: 20px;
+}
+table tr td:first-child {
+    min-width: 14vw;
+}
+h1{
+    margin: 10px;
+}

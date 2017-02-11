@@ -1,0 +1,157 @@
+nav{
+    position: fixed;
+}
+
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial,sans-serif;
+    color: rgb(0, 4, 24);
+}
+
+/*disable ugly default styling*/
+a{
+    color: inherit;
+    cursor: inherit;
+    text-decoration: inherit;
+}
+
+input{
+    border: 1px solid black;
+}
+
+
+
+
+input[type=text] {
+    width: calc(100% - 45px);
+    padding: 5px;
+    margin: 5px;
+}
+
+#metadata{
+    margin: 5px;
+    padding: 5px;
+    width: 100%;
+}
+
+#editor{
+    width: calc(100% - 45px);
+    padding: 5px;
+    height: 90vh;
+    border: 1px solid black;
+
+    tab-size: 4;
+    -moz-tab-size: 4;
+    -webkit-tab-size: 4;
+}
+
+
+/*lets deal with the classes widget*/
+#classContainer{
+    background-color: white;
+    border: 1px solid black;
+    width: calc(100% - 45px);
+    padding: 5px;
+    margin: 5px;
+}
+
+#classContainer #buttons {
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+#classContainer #buttons span{
+    width: 5em;
+    text-align:center;
+    background-color: rgb(0, 4, 24);
+    color: white;
+    padding: 10px;
+    margin: 5px;
+    font-weight: bold;
+    font-size:.8em;
+    user-select: none;
+    -moz-user-select: none;
+}
+#classContainer #buttons span:hover{
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#classContainer th{
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#classContainer #classes tr td input{
+    width: 20vw;
+    margin: 0;
+}
+
+#classContainer #classes tr td a{
+    padding-left: 10px;
+    padding-right: 10px;
+    -moz-user-select: none;
+    user-select: none;
+}
+#classContainer #classes tr td a:hover{
+    cursor: pointer;
+}
+
+#classContainer #classes tr td input[type=checkbox] {
+    text-align: left;
+    width: auto;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 1px solid black;
+    color: black;
+}
+
+
+
+#popover{
+    width: calc(100vw - 40px);
+    margin-left: 10px;
+    height: calc(100vh - 20px);
+    margin-top: 10px;
+    box-shadow: 0 0 50px 20px black;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999999999999999;
+    background-color: white;
+    overflow:auto;
+}
+
+#close{
+    float: right;
+    padding: 5px;
+    width: 40px;
+    text-align: center;
+    background: #ff4341;
+
+    font-size: .85em;
+    font-weight: 900;
+    color: white;
+
+    cursor: pointer;
+}
+#close:hover{
+    background: #ff2525;
+}
+
+iframe{
+    width: calc(100vw - 60px);
+    height: calc(100vw - 40px);
+    overflow: auto;
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
+

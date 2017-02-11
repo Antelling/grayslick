@@ -1,0 +1,59 @@
+table a:link {
+    color: black;
+    text-decoration:none;
+}
+table a:active,
+table a:hover {
+    text-decoration:underline;
+    cursor: pointer;
+}
+table {
+    font-family:Arial, Helvetica, sans-serif;
+    color:black;
+    font-size:.8em;
+    text-shadow: 1px 1px 0px #fff;
+    background:#eaebec;
+    border:black 1px solid;
+
+    margin:0 auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+    font-weight: bold;
+}
+table th {
+    padding:21px 25px 22px 25px;
+
+    background: #ededed;
+    background: -webkit-gradient(linear, left top, left bottom, from(#ededed), to(#ebebeb));
+    background: -moz-linear-gradient(top,  #ededed,  #ebebeb);
+}
+table th:first-child {
+    text-align: center;
+    padding-left:20px;
+}
+table tr {
+    text-align: center;
+    padding-left:20px;
+}
+table td:first-child {
+    text-align: left;
+    padding-left:20px;
+}
+table td {
+    padding:18px;
+    border: 1px solid black;
+    background: #fafafa;
+    background: -webkit-gradient(linear, left top, left bottom, from(#fbfbfb), to(#fafafa));
+    background: -moz-linear-gradient(top,  #fbfbfb,  #fafafa);
+}
+table tr.even td {
+    background: #f6f6f6;
+    background: -webkit-gradient(linear, left top, left bottom, from(#f8f8f8), to(#f6f6f6));
+    background: -moz-linear-gradient(top,  #f8f8f8,  #f6f6f6);
+}
+table tr:hover td {
+    background: #f2f2f2;
+    background: -webkit-gradient(linear, left top, left bottom, from(#f2f2f2), to(#f0f0f0));
+    background: -moz-linear-gradient(top,  #f2f2f2,  #f0f0f0);
+}

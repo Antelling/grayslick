@@ -1,0 +1,76 @@
+<!doctype html>
+{% load staticfiles%}
+<html>
+<head>
+
+    <title>Grayslick</title>
+
+    <link type="text/css" rel="stylesheet" href="{% static 'styles/dashboard.css' %}">
+    <link type="text/css" rel="stylesheet" href="{% static 'styles/nav.css' %}">
+    <link type="text/css" rel="stylesheet" href="{% static 'styles/table.css' %}">
+
+    <link href='https://fonts.googleapis.com/css?family=Alfa+Slab+One' rel='stylesheet' type='text/css'>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <script src="{% static 'dash/dashTables.js' %}"></script>
+</head>
+
+<body>
+<nav>
+    <span class="left">Grayslick</span>
+    <span><a href="/">Dashboard</a></span>
+</nav>
+
+<div id="spacerBecauseTheNavIsAbsolute">_</div>
+
+<a id="newTest" href="/main/new">
+    <div class="button">New Test</div>
+</a>
+
+<h2 class="first">Current Tests</h2>
+<hr>
+
+<table id="currentTests">
+    <tr>
+        <th>Title</th>
+        <th>Status</th>
+        <th>Edit</th>
+        <th>View Results</th>
+    </tr>
+    {% for test in tests %}
+        {% if test.archived == False and test.deleted == False %}
+            <tr>
+                <td>{{test.title}}</td>
+                <td><a class="archive">archive</a></td>
+                <td><a href="/main/edit/{{test.title}}">edit</a></td>
+                <td><a href="/results/overview/{{test.title}}">results</a></td>
+            </tr>
+        {% endif %}
+    {% endfor %}
+</table>
+
+<h2>Archived Tests</h2>
+<hr>
+
+<table id="archivedTests">
+    <tr>
+        <th>Title</th>
+        <th>Status</th>
+        <th>Delete</th>
+        <th>View Results</th>
+    </tr>
+    {% for test in tests %}
+        {% if test.archived == True and test.deleted == False %}
+            <tr>
+                <td>{{test.title}}</td>
+                <td><a class="unarchive">unarchive</a></td>
+                <td><a class="delete">delete</a></td>
+                <td><a href="/results/overview/{{test.title}}">results</a></td>
+            </tr>
+        {% endif %}
+    {% endfor %}
+</table>
+
+</body>
+
+</html>

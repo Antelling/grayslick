@@ -1,0 +1,47 @@
+<!doctype html>
+{% load staticfiles%}
+<html>
+<head>
+
+    <title>Grayslick</title>
+
+    <link type="text/css" rel="stylesheet" href="{% static 'styles/nav.css' %}">
+
+    <link href='https://fonts.googleapis.com/css?family=Alfa+Slab+One' rel='stylesheet' type='text/css'>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+
+    <style>
+        body{
+            margin: 0;
+        }
+        #spacer{
+            height: 35px;
+        }
+        form{
+            margin: 10px;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+<nav>
+    <span class="left">Grayslick</span>
+</nav>
+
+<div id="spacer"></div>
+
+<form method="post" action=".">
+
+    {% csrf_token %}
+
+    <label for="access_code">Access code: </label>
+    <input id="access_code" name="access_code" type="text">
+
+    <input type="submit" value="submit">
+</form>
+
+</body>
+
+</html>

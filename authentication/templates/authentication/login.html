@@ -1,0 +1,38 @@
+{% extends 'static_pages/main_template.html' %}
+
+{% block head %}
+    <style>
+    .fixed-width, #submit{
+        margin: 5px;
+    }
+    .fixed-width{
+        display: inline-block;
+        width: 7em;
+    }
+    </style>
+    <script>
+    $(function(){
+        $("#username").focus();
+    })
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+
+        {% if error %} Sorry, that wasn't correct {% endif %}
+
+        <form id="login_form" method="post" action="/auth/login/">
+            {% csrf_token %}
+            <span class="fixed-width">Username:</span> <input type="text" name="username" id="username" value="" size="50"/>
+            <br/>
+            <br/>
+            <span class="fixed-width">Password:</span> <input type="password" name="password" value="" size="50"/>
+            <br/>
+            <br/>
+
+            <input type="submit" id="submit" value="submit"/>
+        </form>
+    </div>
+    <br/>
+{% endblock %}

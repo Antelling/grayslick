@@ -1,0 +1,94 @@
+<!doctype html>
+{% load staticfiles %}
+<html>
+<head>
+
+    <title>Grayslick</title>
+    <link type="text/css" rel="stylesheet" href="{% static 'styles/index.css' %}">
+    <link type="text/css" rel="stylesheet" href="{% static 'styles/nav.css' %}">
+
+    <script src="{% static 'app.js' %}"></script>
+
+    <link href='https://fonts.googleapis.com/css?family=Alfa+Slab+One' rel='stylesheet' type='text/css'>
+
+    <script src="{% static 'libraries/jquery.min.js' %}"></script>
+    <script src="{% static 'libraries/inputLabel.js' %}"></script>
+    <script src="{% static 'designScripts/signup.js' %}"></script>
+</head>
+<body>
+
+<nav>
+    <span class="left">Grayslick</span>
+    <span><a href="signup.html">Sign Up</a></span>
+    <span><a href="login.html">Log In</a></span>
+</nav>
+
+
+<div class="landingClipper">
+    <img class="landing" src="{% static 'oceanImages/no_boat_ocean.jpg' %}">
+</div>
+
+<div class="relativeThatTakesUpNoSpace">
+    <div id="signUpBox">
+        <form id="signup" method="post" action="/auth/signup">
+
+            {% csrf_token %}
+
+            <div class="floatingBlock">
+                <div>
+                    <input id="username" name="username" type="text"/>
+                    <input id="password" name="password" type="password"/>
+                    <input id="confirm" type="password"/>
+                </div>
+
+
+                <input id="submit" type="submit" value="submit"><span
+                    id="error">No username, no password</span>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('#submit').attr('disabled', 'disabled');
+
+        $('#username').on('input', function () {
+            updateError();
+            checkAvailable()
+        });
+        $('#password').on('input', updateError);
+        $('#confirm').on('input', updateError);
+
+        function updateError() {
+            var username = ' No username specified;';
+            var password = ' Passwords do not match or are missing';
+            if ($('#username').val().length > 0) username = '';
+            if ($('#password').val() == $('#confirm').val() && $('#confirm').val().length > 0) password = '';
+            if (!(username || password)) {
+                $('#submit').removeAttr('disabled');
+                $('#error').html('');
+            } else {
+                $('#submit').attr('disabled', 'disabled');
+                $('#error').html(username + password);
+
+            }
+        }
+
+        function checkAvailable() {
+            var username = $('#username').val();
+            $.get("/auth/is_username_available/" + username, function (data) {
+                if (data === 'false') {
+                    $('#avail').html('Username already taken');
+                    $('#submit').attr('disabled', 'disabled');
+                } else {
+                    $('#avail').html('');
+                    $('#submit').removeAttr('disabled');
+                }
+            });
+        }
+    });
+</script>
+
+</body>
+</html>

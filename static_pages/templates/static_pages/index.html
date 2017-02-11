@@ -1,0 +1,174 @@
+<!doctype html>
+{% load staticfiles %}
+<html>
+<head>
+    <title>Grayslick</title>
+    <link type="text/css" rel="stylesheet" href="{% static 'styles/index.css' %}">
+    <link type="text/css" rel="stylesheet" href="{% static 'styles/nav.css' %}">
+
+    <link href='https://fonts.googleapis.com/css?family=Alfa+Slab+One' rel='stylesheet' type='text/css'>
+
+    <meta charset="utf-8">
+
+    <link rel="icon" href="/fav.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="/fav.ico" type="image/x-icon"/>
+
+    <link rel="prefetch" href="/auth/signup"/>
+    <link rel="prerender" href="/auth/signup"/>
+    <link rel="next" href="/auth/signup"/>
+</head>
+<body>
+
+<nav>
+    <span class="left">Grayslick</span>
+    <span><a href="/auth/signup/">Sign Up</a></span>
+    <span><a href="/auth/login/">Log In</a></span>
+</nav>
+
+<div class="landingClipper">
+    <img class="landing" src="{% static 'oceanImages/ice_trail.jpg' %}">
+</div>
+
+<div id="landingTitle">Grayslick Test Engine</div>
+
+
+<div id="featureContainer">
+
+    <div class="feature">
+        <h2>Text Based Test Creation</h2>
+
+        <div class="content">
+            Grayslick creates tests entirely from text. This allows for existing tests written in Office Word or Google
+            Docs to be easily ported to Grayslick. It also allows for much faster test creation than a system like
+            Google Forms. And since tests are just text files, sharing them with other teachers is easy.
+        </div>
+    </div>
+
+    <div class="feature">
+        <h2>Automatic Grading</h2>
+
+        <div class="content">
+            Grading tests is an extremely robotic, time consuming task. While scantrons or similar systems are an
+            improvement, students still need to wait days for their score. Grayslick can provide results immediately,
+            for everything except essay and short response questions.
+
+            <br/>
+            <br/>
+
+            Essay and Short Response questions can not be automatically graded. Instead, they are put into a fast
+            grading interface. This interface presents all responses on one page, and does not provide the student's
+            name. This makes grading more streamlined, and removes any unintentional biases.
+        </div>
+    </div>
+
+    <div class="feature">
+        <h2>Protection Against Cheating</h2>
+
+        <div class="content">
+            One of the largest problems with online tests is that students can look up the answers, or email answers
+            to each other, or save the test and give it to other classes. Grayslick has several security features
+            preventing this:
+
+            <ul>
+                <li>If the student leaves the tab, the test is submitted as is, and is flagged for cheating.</li>
+                <li>If the student leaves the browser window, the test is submitted as is, and is flagged for
+                    cheating.
+                </li>
+                <li>Paste is disabled, so no notes can be copied than pasted into an essay question.</li>
+                <li>Copy is disabled, so tests can be distributed by students.</li>
+                <li>Developer tools are disables, so students can not turn off these protections.</li>
+                <li>There are several security suites, so browser addons or user scripts
+                    can not consistently disable protections.
+                </li>
+                <li>The test will not render if the security is turned off.</li>
+                <li>Questions can be set to be randomly ordered, making cheating off of other student's screens
+                    impossible.
+                </li>
+            </ul>
+
+            Additionally, using a phone to look up answers is far more subtle than using the computer, so even if a
+            particularly clever script could disable security, there is no motivation for using one. Security is
+            optional, and so can be disabled for surveys or labs.
+        </div>
+    </div>
+
+    <div class="feature">
+        <h2>Fast for students to take tests</h2>
+
+        <div class="content">
+            Students do not need to create accounts. Instead, they simply visit a test url based off of your username
+            and the test title. If you have toggled the test to be ready to take, it prompts them for their class code.
+            This code splits students into different classes. Once they are in the test, they fill in their name, then
+            complete the test. After it is completed, there score is given to them, and their answers recorded. After
+            all your students have taken the test, you can release the answers, which will email all the students the
+            test, the answers, and their responses, as a study tool. The student responses are then archived.
+
+            <br/><br/>
+
+            Tests use modern HTML5, not Adobe Flashplayer. This means students can take them using a computer, iPad, or
+            phone.
+        </div>
+    </div>
+
+    <hr/>
+
+    <div class="feature">
+        <h2>Example Test Syntax</h2>
+
+        <div class="content">
+            This is a small example test. A more complete reference can be found <a href="/help/">here.</a>
+        </div>
+        <div class="code">
+            //anything after two slashes is a note only you will see <br/>
+            <br/>
+            //this is how you make a multiple choice question: <br/>
+            mc: What philosophy was Zeno a key founder of? <br/>
+            Cynicism //this is option 1 <br/>
+            Stoicism //option 2 <br/>
+            Skepticism //option 3 <br/>
+            Epicureanism //4 <br/>
+            Neoplatonism //5 <br/>
+            2 //this says that option 2 is the correct one <br/>
+            <br/>
+            //this is how you embed a youtube video: <br/>
+            Watch the following video and write an essay on how the Greek Stoic philosophy is relevant in modern times.
+            <br/>
+            media: https://www.youtube.com/watch?v=yu7n0XzqtfA <br/>
+            <br/>
+            es: Write three to five paragraphs. //this is how you declare an essay question <br/>
+        </div>
+        <div class="content">
+            <br/>
+            Most questions follow this format, except the essay and short response question types: <br/>
+        </div>
+        <div class="code">
+            <i>question type</i>: description <br/>
+            <i>option</i> <br/>
+            <i>option</i> <br/>
+            <i>option</i> <br/>
+            <i>optional answer for auto grading</i> <br/>
+            <i>optional point value of question</i> <br/>
+        </div>
+        <div class="content">
+            <br/>
+            Any webpage can be embedded using the media: command. A variety of text formatting effects can be used.
+            Questions can be set to be randomly ordered.
+        </div>
+    </div>
+</div>
+
+
+<div class="landingClipper">
+    <img class="landing" src="{% static 'oceanImages/sunset.jpg' %}">
+</div>
+
+<div class="relativeThatTakesUpNoSpace">
+    <div id="signUpBox">
+
+        <a href="/auth/signup/"><span id="signUp">Sign Up</span></a>
+
+    </div>
+</div>
+
+</body>
+</html>

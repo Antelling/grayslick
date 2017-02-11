@@ -1,0 +1,85 @@
+<!doctype html>
+{% load staticfiles %}
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Grayslick</title>
+
+    <script>
+        var teacherName = '{{user}}';
+    </script>
+
+
+    <link type="text/css" rel="stylesheet" href="{% static 'styles/editor.css' %}">
+    <link type="text/css" rel="stylesheet" href="{% static 'styles/nav.css' %}">
+
+    <link href='https://fonts.googleapis.com/css?family=Alfa+Slab+One' rel='stylesheet' type='text/css'>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <script src="{% static 'libraries/jquery.hotkeys.js' %}"></script>
+    <script src="{% static 'libraries/ace/src/ace.js' %}" type="text/javascript" charset="utf-8"></script>
+
+    <script src="{% static 'compiler/compiler.js' %}"></script>
+
+    <script src="{% static 'designScripts/popoverHandler.js' %}"></script>
+    <script src="{% static 'designScripts/editorKeyboardShortcuts.js' %}"></script>
+
+    <script src="{% static 'editor/autosave.js' %}"></script>
+
+    <link rel="shortcut icon" href="{% static 'oceanImages/faviconVersion2.ico' %}" type="image/x-icon">
+    <link rel="icon" href="{% static 'oceanImages/faviconVersion2.ico' %}" type="image/x-icon">
+
+    <script src="{% static 'app.js' %}"></script>
+</head>
+
+<body>
+
+<nav>
+    <span class="left">Grayslick</span>
+    <span><a href="/">Dashboard</a></span>
+    <span><a id="preview">Preview</a></span>
+    <span><a id="help">Help</a></span>
+    <span><a id="publish">Publish</a></span>
+</nav>
+<div id="spacerBecauseTheNavIsAbsolute">_</div>
+
+<div id="metadata">
+
+    {% csrf_token %}
+
+    <label for="name">Test Name: </label><br/>
+    <input type="text" id="name" value="{{ test.title }}"><br/><br/>
+
+    <label for="description">Description of test: </label><br/>
+    <input type="text" id="description" value="{{ test.description }}"><br/><br/>
+
+    <label for="access_code">Test access code (leave blank for easy access): </label><br/>
+    <input type="text" id="access_code" value="{{ test.access_code }}"><br/><br/>
+
+    <label for="security">Use Security: </label><br/>
+    <input type="checkbox" id="security" {% if test.security %} checked {% endif %}><br/><br/>
+
+    <label for="review">Allow student review: </label><br/>
+    <input type="checkbox" id="review" {% if test.allow_question_review %} checked {% endif %}><br/><br/>
+
+    <input type="hidden" id="pk" value="{{ test.id }}"/>
+
+
+
+    Body of test:<br/>
+
+    <div id="editor">{{ test.markdown }}</div>
+    <script>
+        var editor = ace.edit("editor");
+        editor.setTheme("ace/theme/xcode");
+        editor.getSession().setMode("ace/mode/python");
+    </script>
+
+</div>
+
+<div id="popover">
+    <div id="close">X</div>
+    <div id="contents"></div>
+</div>
+</body>
+</html>

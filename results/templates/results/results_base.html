@@ -1,0 +1,35 @@
+<!doctype html>
+{% load staticfiles%}
+<html>
+<head>
+
+    <title>Grayslick</title>
+
+    <link type="text/css" rel="stylesheet" href="{% static 'styles/dashboard.css' %}">
+    <link type="text/css" rel="stylesheet" href="{% static 'styles/nav.css' %}">
+    <link type="text/css" rel="stylesheet" href="{% static 'styles/table.css' %}">
+
+    <link href='https://fonts.googleapis.com/css?family=Alfa+Slab+One' rel='stylesheet' type='text/css'>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <script src="{% static 'dash/dashTables.js' %}"></script>
+    <script src="{% static 'app.js' %}"></script>
+
+
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+</head>
+
+<body>
+<nav>
+    <span class="left">Grayslick</span>
+    <span><a href="/">Dashboard</a></span>
+    {% block nav %}<span><a href="../">Back</a></span>{% endblock %}
+</nav>
+
+<div id="spacerBecauseTheNavIsAbsolute">_</div>
+
+{% block content %} {% endblock %}
+
+</body>
+
+</html>

@@ -1,0 +1,139 @@
+{% extends 'results/results_base.html' %}
+
+{% block content %}
+
+<style>
+    #question, #content {
+        border: 1px solid black;
+        padding: 5px;
+        margin: 5px;
+    }
+
+    #group{
+        margin: 5px;
+        padding: 5px;
+    }
+
+</style>
+
+<div id="hidden">
+    <div id="faketest">{{ test|safe }}</div>
+    <span id="data">{{ data }}</span>
+</div>
+
+<div id="group">
+    Question:
+    <div id="question"></div>
+    Student Answer:
+    <div id="content"></div>
+    <form onsubmit="return process()">
+        Points they scored: <input id="points" type="number" autofocus step="0.25" min="0"> out of <span
+            id="totalPoints"></span>
+        <br/>
+        <input type="submit" id="submit" value="save">
+    </form>
+</div>
+
+
+<script>
+    $("#hidden").hide();
+
+    var data = parse($("#data").html()).map(function (item) {
+        return [item[0], parse(item[1])]
+    });
+    var newData = [];
+    data.forEach(function(item) {
+        if (item[1] == null) return;
+        newData.push(item);
+    });
+    data = newData;
+
+    var questionLength = 0;
+    data.forEach(function (item) {
+        var L = Object.keys(item[1]).length;
+        questionLength = L > length ? L : length;
+    });
+
+    var studentLength = data.length;
+
+
+
+
+    var questionNumb = 1;
+    var studentNumb = 0;
+    var currentResponse = [0, 0];
+    function step() {
+        if (questionNumb < questionLength) {
+            while (true) {
+                if (studentNumb > studentLength - 1) {
+                    studentNumb = 0;
+                    questionNumb++;
+                    if (questionNumb > questionLength) {
+                        finish();
+                        break;
+                    }
+                }
+
+                try {
+                    student = data[studentNumb];
+                    question = student[1][questionNumb];
+                    if (typeof question === "undefined") throw "oops"
+                } catch (e) {
+                    //the teacher can edit tests even after students have taken them, so this isn't actually a problem
+                    studentNumb++;
+                    continue;
+                }
+
+                if (!question.hasBeenGraded) {
+                    currentResponse = [studentNumb, questionNumb];
+                    var prompted = promptTeacher(question);
+                    studentNumb++;
+                    if(prompted) break;
+                } else {
+                    studentNumb++;
+                }
+            }
+        } else {
+            finish();
+        }
+    }
+
+    function finish() {
+        $("#group").html("<h1>Finished. </h1>");
+    }
+
+    function process() {
+        var points = Number($("#points").val().trim());
+        console.log(points);
+        var s = currentResponse[0];
+        var q = currentResponse[1];
+        data[s][1][q].studentManualPoints += points;
+        data[s][1][q].correctPoints += points;
+        data[s][1][q].hasBeenGraded = true;
+        data[s][1][q].possiblePoints += data[s][1][q].possibleManualPoints;
+        console.log(data[s][1]);
+        updateDatabase(data[s][0], data[s][1]);
+        step();
+        $("#points").focus();
+        return false;
+    }
+
+    function promptTeacher(question) {
+        if(typeof question === "string") return false;
+
+        var description = $("#" + question.id).wrap('<p/>').parent().html();
+        var content = question.studentAnswer;
+        var totalPoints = question.possibleManualPoints;
+        $("#question").html(description);
+        $("#content").text(content);
+        $("#totalPoints").text(totalPoints);
+        return true;
+    }
+
+    function updateDatabase(responsePK, response) {
+        $.post("./save/", {"pk": responsePK, "response": JSON.stringify(response)});
+    }
+
+    step();
+</script>
+{% endblock %}

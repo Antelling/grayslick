@@ -1,0 +1,111 @@
+<!doctype html>
+{% load staticfiles%}
+<html>
+<head>
+
+    <title>Grayslick</title>
+
+    <script>var dontShuffle = true;</script>
+
+    <!--jquery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+
+    <!--jquery UI-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.css" type="text/css"
+          rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+
+    <!--nav bar styling-->
+    <link type="text/css" rel="stylesheet" href="{% static 'styles/nav.css' %}">
+
+    <!--font-->
+    <link href='https://fonts.googleapis.com/css?family=Alfa+Slab+One' rel='stylesheet' type='text/css'>
+
+    <!--test styles-->
+    <link type="text/css" rel="stylesheet" href="{% static 'testScripts/test.css' %}">
+    <script src="{% static 'testScripts/test.js' %}"></script>
+
+    <style>
+        body {
+            margin: 0;
+        }
+
+        #spacer {
+            height: 35px;
+        }
+
+        #results {
+            margin: 10px;
+            padding: 10px;
+            font-family: sans-serif;
+        }
+
+        .questionBlock{
+            border: 1px solid black;
+            margin: 20px;
+            padding: 10px;
+        }
+
+        .incorrect{
+            background-color: #ff908c;
+        }
+
+        #test {
+            width: 50%;
+            float: left;
+        }
+        #fred{
+            float: right;
+        }
+        #fred h1{
+            color: purple;
+            margin: 50px;
+            padding: 30px;
+            border: 3px solid yellow;
+            outline: 20px solid orange;
+            background-color: green;
+        }
+    </style>
+</head>
+
+<body>
+<nav>
+    <span class="left">Grayslick</span>
+</nav>
+
+<div id="spacer"></div>
+
+<div id="results">
+    <h1>You got {{grade.percent}}%.</h1>
+
+    <h2>
+        You scored {{grade.scoredPoints}} out of {{grade.totalPoints}} points. There are {{grade.ungradedPoints}} points
+        that need to be scored by a teacher.
+    </h2>
+
+    <h3>Your teacher has permitted review of questions. Here is what you got wrong:</h3>
+
+    {% if test.allow_question_review %}
+    <!--we just plop the test html in, and use javascript to fill the answers in-->
+    <div id="test">{{ test.html|safe }}</div>
+    <div id="fred">
+        <h1>AD</h1>
+        <h1>AD</h1>
+        <h1>AD</h1>
+        <h1>AD</h1>
+        <h1>AD</h1>
+        <h1>AD</h1>
+        <h1>AD</h1>
+    </div>
+    <div id="hidden">
+        <div id="studentResults">{{ results }}</div>
+        <div id="studentGrade">{{ grade }}</div>
+        <div id="answers">{{ test.answers }}</div>
+    </div>
+    <script src="{% static 'testScripts/review.js' %}"></script>
+    {% endif %}
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,91 @@
+<!doctype html>
+{% load staticfiles%}
+<html>
+<head>
+
+    <title>Grayslick</title>
+
+    <!--jquery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+
+    <!--jquery UI-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.css" type="text/css"
+          rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+
+    <!--nav bar styling-->
+    <link type="text/css" rel="stylesheet" href="{% static 'styles/nav.css' %}">
+
+    <!--font-->
+    <link href='https://fonts.googleapis.com/css?family=Alfa+Slab+One' rel='stylesheet' type='text/css'>
+
+    <!--test styles-->
+    <link type="text/css" rel="stylesheet" href="{% static 'testScripts/test.css' %}">
+    <script src="{% static 'testScripts/test.js' %}"></script>
+
+    <style>
+        body{
+            margin: 0;
+        }
+        #spacer{
+            height: 35px;
+        }
+
+        #name{
+            width: 40em;
+            display: inline-block;
+        }
+        form{
+            margin: 10px;
+            padding: 10px;
+        }
+        #submit{
+            padding: 10px;
+            background-color: #57ff29;
+            display: inline-block;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #submit:hover{
+            background-color: #44c621;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+<nav>
+    <span class="left">Grayslick</span>
+</nav>
+
+<div id="spacer"></div>
+
+<form method="post" id="form" action="results/">
+
+    {% csrf_token %}
+
+    <h1>{{ test.title }}</h1>
+
+    <p> {{test.description }}</p>
+
+    Please input your first and last name:
+    <br/>
+    <input type="text" id="name" name="name">
+
+    <input type="hidden" id="time-away" name="time-away">
+
+    <hr/>
+
+    <div id="test">{{ test.html|safe }}</div>
+
+    <p id="submit">Submit</p>
+</form>
+
+{% if test.security %}
+    <!--mobile version modifier-->
+    <script src="{% static 'testScripts/responsive.js' %}"></script>
+{% endif %}
+
+</body>
+
+</html>

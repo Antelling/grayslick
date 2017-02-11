@@ -1,0 +1,60 @@
+<!doctype html>
+{% load staticfiles%}
+<html>
+<head>
+
+    <title>Grayslick</title>
+
+    <link type="text/css" rel="stylesheet" href="{% static 'styles/dashboard.css' %}">
+    <link type="text/css" rel="stylesheet" href="{% static 'styles/nav.css' %}">
+    <link type="text/css" rel="stylesheet" href="{% static 'styles/table.css' %}">
+
+    <link href='https://fonts.googleapis.com/css?family=Alfa+Slab+One' rel='stylesheet' type='text/css'>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <script src="{% static 'dash/dashTables.js' %}"></script>
+
+    <style>
+        #form * {
+            margin: 5px;
+        }
+        input[type="text"], textarea{
+            width: 30vw;
+        }
+        textarea{
+            height: 10vw;
+        }
+    </style>
+
+    <script>
+        $(function () {
+            $("#focus").focus();
+        })
+    </script>
+</head>
+
+<body>
+<nav>
+    <span class="left">Grayslick</span>
+    <span><a href="/">Dashboard</a></span>
+</nav>
+
+<div id="spacerBecauseTheNavIsAbsolute">_</div>
+<div class="row">
+    <form action="/main/new" id="form" method="POST">
+        {% csrf_token %}
+
+        <span class="inline-block">Title of your test:</span>
+        <br/><input name="title" id="focus" type="text">
+        <br/>
+        <span class="inline-block">Description of your test:</span>
+        <br/><textarea name="description" type="text"></textarea>
+        <br/>
+
+
+        <input type="submit" value="Create Test">
+        <br/>
+    </form>
+</div>
+<br/>
+</body>

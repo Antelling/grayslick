@@ -1,0 +1,37 @@
+nav{
+    background-color: rgb(0, 4, 24);
+    color: white;
+    text-align: right;
+    padding: 5px;
+    position: fixed;
+    width: 100%;
+    z-index: 2;
+}
+
+nav span{
+    margin-right: 50px;
+    margin-left: 5px;
+    user-select: none;
+    -moz-user-select: none;
+}
+
+nav span:first-child{
+    float: left;
+    font-family: 'Alfa Slab One', Impact, sans-serif;
+}
+
+nav span:hover{
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+nav span:first-child:hover{
+    text-decoration: none;
+    cursor: default;
+}
+
+#spacerBecauseTheNavIsAbsolute{
+    font-family: 'Alfa Slab One', Impact, sans-serif;
+    padding: 5px;
+    margin: 5px;
+}

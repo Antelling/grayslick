@@ -1,0 +1,174 @@
+{% extends 'results/results_base.html' %}
+{% load staticfiles %}
+{% block nav %}<span><a href="/">Back</a></span>{% endblock %}
+
+{% block content %}
+
+<style>
+
+    .container {
+        display: flex;
+        flex-direction: row;
+    }
+
+    #left {
+        padding: 10px;
+        xbackground-color: red;
+        width: 30vw;
+        display: flex;
+        justify-content: center;
+    }
+
+    #right {
+        padding: 10px;
+        xbackground-color: green;
+        width: 70vw;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .bar rect {
+        fill: rgb(0, 4, 24);
+    }
+
+    .bar text {
+        fill: #fff;
+        font: 10px sans-serif;
+    }
+
+    table {
+        width: calc(20vw - 20px);
+        margin: 0;
+    }
+
+    .ungraded {
+        color: red;
+    }
+
+    #modal {
+        width: 200px;
+        margin: 0 auto;
+        font-size: 1.5em;
+        padding: 5px;
+        border: 1px solid black;
+        box-shadow: 5px 5px 0 red;
+    }
+
+    #modal-container a {
+        cursor: pointer;
+    }
+
+    #modal-container a:hover {
+        text-decoration: underline;
+    }
+
+    #export {
+        border: 1px solid black;
+        margin: 10px;
+        font-size: 1.2em;
+    }
+
+    #export span {
+        padding: 5px;
+    }
+
+    .export-link {
+        background-color: #fafafa;
+        display: block;
+        padding: 5px;
+        border-top: 1px solid black;
+        cursor: pointer;
+    }
+
+    .export-link:hover {
+        background-color: #f2f2f2;
+    }
+
+    #stats{
+        padding: 10px;
+        border: 1px solid black;
+        font-size: 1.5em;
+        cursor: pointer;
+        background-color: #fafafa;
+    }
+    #stats:hover{
+        background-color:#f2f2f2
+    }
+
+</style>
+
+<div class="container">
+    <div id="left">
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Grade</th>
+                <th>Seconds Away</th>
+            </tr>
+            {% for student in results %}
+            <tr>
+                <td>
+                    <a href="./{{ student.pk }}/">{{ student.name }}</a>
+                </td>
+                <td>
+                    <span class="data {% if student.ungraded_questions %} ungraded {% endif %}">{{ student.grade }}%</span>
+                </td>
+                <td> {{student.time}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <div id="right">
+        <div id="modal-container">
+            <a href="./grade">
+                <div id="modal">You need to grade open-ended questions. Click here.</div>
+            </a>
+        </div>
+
+        <svg id="graph" width="600" height="500"></svg>
+
+        <div id="stats">
+            <a href="./stats/">View Test Stats</a>
+        </div>
+
+        <div id="export">
+            <span>Export data:</span>
+            <a href="./export/gradescsv" class="export-link">
+                CSV of grades
+            </a>
+            <a href="./export/namescsv" class="export-link">
+                CSV of names and grades
+            </a>
+        </div>
+
+
+    </div>
+
+</div>
+
+<script src="{% static 'designScripts/graphs.js' %}"></script>
+<script>
+    //hide the modal if they don't actually have anything that needs grading
+    var hide = true;
+    $(".ungraded").each(function () {
+        hide = false;
+    });
+    if (hide) $("#modal-container").hide();
+</script>
+<script>
+
+    var data = [];
+    $(".data").each(function (i, obj) {
+        data.push(Number($(obj).text().replace("%", "")) / 100);
+    });
+    data = data.map(function (numb) {
+        return numb > 1 ? 1 : numb;
+    });
+
+    createBarChart("graph", data);
+
+</script>
+{% endblock %}
